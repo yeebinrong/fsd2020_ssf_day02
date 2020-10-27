@@ -18,7 +18,14 @@ app.set('view engine', 'hbs')
 app.use(express.static(__dirname + '/public'));
 
 // declare variable of images
-const imageArray = ('dado-1.png', 'dice-showing-6.png', 'Five-Image.png', 'four.png', 'roll2.png', 'three_dots.png')
+let imageArray = ['dado-1.png', 'dice-showing-6.png', 'Five-Image.png', 'four.png', 'roll2.png', 'three_dots.png']
+
+function randomNum()
+{
+    return Math.floor(Math.random() * Math.floor(imageArray.length - 1));
+}
+
+console.info(imageArray)
 
 app.get('/roll',
     (req, resp) => {
@@ -27,7 +34,7 @@ app.get('/roll',
         resp.render('roll',
                 {
                     title : 'Rolled a dice.',
-                    image1: 'images/dado-1.png',
+                    image1: `images/${imageArray[randomNum]}`,
                     image2: 'images/dado-1.png'
                 }
         )
