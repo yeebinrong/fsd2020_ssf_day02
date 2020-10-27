@@ -17,32 +17,17 @@ app.set('view engine', 'hbs')
 // configure the application
 app.use(express.static(__dirname + '/public'));
 
-// declare variable of images
+// declare array of images
 let imageArray = ['dado-1.png', 'dice-showing-6.png', 'Five-Image.png', 'four.png', 'roll2.png', 'three_dots.png']
 
+// function to return a random number
 function randomNum()
 {
     return Math.floor(Math.random() * Math.floor(imageArray.length - 1));
 }
 
-console.info(imageArray)
-
-app.get('/roll',
-    (req, resp) => {
-        resp.status(200)
-        resp.type('text/html')
-        resp.render('roll',
-                {
-                    title : 'Rolled a dice.',
-                    image1: `images/${imageArray[randomNum]}`,
-                    image2: 'images/dado-1.png'
-                }
-        )
-    }
-)
-
-// default page
-app.use(
+// Homepage
+app.get('/',
     (req, resp) => {
         resp.status(200)
         resp.type('text/html')
@@ -51,6 +36,28 @@ app.use(
                     title: 'Awesome Dice Rolling Homepage'
                 }
         )
+    }
+)
+
+// endpoint for page that rolls, dice changes every refresh
+app.get('/roll',
+    (req, resp) => {
+        resp.status(200)
+        resp.type('text/html')
+        resp.render('roll',
+                {
+                    title : 'Rolled a dice.',
+                    image1: `images/${imageArray[randomNum()]}`,
+                    image2: `images/${imageArray[randomNum()]}`
+                }
+        )
+    }
+)
+
+// redirects browser back to homepage
+app.use(
+    (res, resp) => {
+        resp.redirect('/')
     }
 )
 
