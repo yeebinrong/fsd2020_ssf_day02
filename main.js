@@ -2,6 +2,10 @@
 const express = require('express')
 const handlebars = require('express-handlebars')
 
+// function to return a random number
+const randomNum = () => 
+    Math.floor(Math.random() * Math.floor(imageArray.length - 1))
+
 // configure port
 const PORT = parseInt(process.argv[2]) || parseInt(process.env.APP_PORT) || 3000
 
@@ -14,17 +18,22 @@ app.engine('hbs',
 )
 app.set('view engine', 'hbs')
 
-// configure the application
-app.use(express.static(__dirname + '/public'));
+// load resources
+app.use(express.static(__dirname + '/public'))
+app.use(express.static(__dirname + '/static'))
 
 // declare array of images
-let imageArray = ['dado-1.png', 'dice-showing-6.png', 'Five-Image.png', 'four.png', 'roll2.png', 'three_dots.png']
+const imageArray = [
+    'dado-1.png', 
+    'dice-showing-6.png', 
+    'Five-Image.png', 
+    'four.png', 
+    'roll2.png', 
+    'three_dots.png'
+]
 
-// function to return a random number
-function randomNum()
-{
-    return Math.floor(Math.random() * Math.floor(imageArray.length - 1));
-}
+
+// Configure express
 
 // Homepage
 app.get('/',
@@ -39,7 +48,7 @@ app.get('/',
     }
 )
 
-// endpoint for page that rolls, dice changes every refresh
+// Dice changes every refresh
 app.get('/roll',
     (req, resp) => {
         resp.status(200)
@@ -58,8 +67,7 @@ app.get('/roll',
 app.use(
     (res, resp) => {
         resp.redirect('/')
-    }
-)
+})
 
 // start the server
 app.listen(PORT, () => {
